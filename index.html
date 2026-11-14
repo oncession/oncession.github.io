@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nzull 下载页</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:system-ui, sans-serif;
+}
+body{
+    background-color: #fff6d8;
+    color:#333333;
+    line-height:1.65;
+    padding:30px 18px;
+}
+.container{
+    max-width:640px;
+    margin:0 auto;
+}
+.head-card{
+    background:#fff9e6;
+    padding:26px;
+    border-radius:12px;
+    margin-bottom:20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: filter 0.4s ease, transform 0.3s ease;
+}
+.head-card:hover{
+    filter: blur(0.4px);
+    transform: translateY(-3px);
+}
+.title{
+    font-size:24px;
+    margin-bottom:10px;
+    font-weight:600;
+}
+.desc{
+    font-size:15px;
+    color:#444;
+}
+.card-wrap{
+    display:grid;
+    gap:16px;
+    margin-bottom:22px;
+}
+.card{
+    background:#fff9e6;
+    padding:22px;
+    border-radius:12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: filter 0.4s ease, transform 0.3s ease;
+}
+.card:hover{
+    filter: blur(0.4px);
+    transform: translateY(-3px);
+}
+.card h3{
+    font-size:17px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+.card p{
+    font-size:14px;
+    color:#444;
+}
+.dl-btn{
+    display:block;
+    width:100%;
+    text-align:center;
+    padding:14px;
+    background:#e9d8a6;
+    color:#222;
+    text-decoration:none;
+    border-radius:12px;
+    font-size:16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: filter 0.35s ease, background 0.25s, transform 0.3s;
+}
+.dl-btn:hover{
+    background:#ddc88c;
+    filter: blur(0.6px);
+    transform: translateY(-2px);
+}
+.note{
+    margin-top:20px;
+    padding:18px;
+    background:#fff9e6;
+    border-radius:12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    font-size:13px;
+    color:#555;
+    transition: filter 0.4s ease;
+}
+.note:hover{
+    filter: blur(0.3px);
+}
+
+/* 公告弹窗 */
+.announcement-mask{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+.announcement-box{
+    width:85%;
+    max-width:500px;
+    background:#fff9e6;
+    padding:28px;
+    border-radius:12px;
+}
+.announcement-box h3{
+    margin-bottom:14px;
+    font-size:18px;
+}
+.announcement-box p{
+    font-size:14px;
+    color:#444;
+    margin-bottom:20px;
+}
+.close-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#e9d8a6;
+    font-size:15px;
+    cursor:default;
+    opacity:0.4;
+}
+.close-btn.active{
+    cursor:pointer;
+    opacity:1;
+}
+</style>
+</head>
+<body>
+<!-- 公告弹窗 -->
+<div class="announcement-mask" id="annMask">
+    <div class="announcement-box">
+        <h3>公告</h3>
+        <p>网盘密码：<span id="pwdText">nznull</span></p>
+        <button class="close-btn" id="closeBtn">等待 3 秒...</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="head-card">
+        <h2 class="title">Nzull</h2>
+        <p class="desc">AI Agent 手机接入API工具</p>
+    </div>
+
+    <div class="card-wrap">
+        <div class="card">
+            <h3>普通AI</h3>
+            <p>普通AI是一问一答的模式，你给出指令，它单次生成回复，不会自己规划后续步骤，不会主动调用别的工具，任务做完就停止。如果一件事需要多步操作，每一步都要你手动继续发指令。</p>
+        </div>
+        <div class="card">
+            <h3>AI Agent</h3>
+            <p>AI Agent可以理解目标之后自主拆分任务，自己判断下一步该做什么，自动调用工具、循环执行，直到目标完成。它可以持续运行，自主完成一连串关联动作，不需要人每一步都进行引导。</p>
+        </div>
+        <div class="card">
+            <h3>Nzull 能做什么</h3>
+            <p>Nzull是面向手机的接入工具，负责在安卓设备上连接AI Agent的API接口，把Agent能力带到移动端。提供稳定的请求转发、会话维持，让手机程序可以调用Agent的自主执行能力。</p>
+        </div>
+    </div>
+
+    <a class="dl-btn" href="https://wwbmc.lanzouq.com/i82Ia4fzalxe" target="_blank">下载安装包</a>
+
+    <div class="note">
+        <p>提示：下载后请自行核对文件完整性，本工具仅做API转发接入。</p>
+    </div>
+</div>
+
+<script>
+const mask = document.getElementById('annMask');
+const closeBtn = document.getElementById('closeBtn');
+let count = 3;
+closeBtn.disabled = true;
+const timer = setInterval(()=>{
+    count--;
+    closeBtn.innerText = `等待 ${count} 秒...`;
+    if(count <= 0){
+        clearInterval(timer);
+        closeBtn.innerText = '确认关闭';
+        closeBtn.classList.add('active');
+        closeBtn.disabled = false;
+    }
+},1000);
+closeBtn.onclick = function(){
+    mask.style.display = 'none';
+}
+</script>
+</body>
+</html>
